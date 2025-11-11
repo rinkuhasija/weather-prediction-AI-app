@@ -30,6 +30,10 @@ export default function WeatherSearch({ onSelect }: { onSelect: (loc: any) => vo
 
     useEffect(() => {
         doSearch(query)
+        return () => {
+            // cancel any pending debounced calls on unmount / before next effect
+            ;(doSearch as unknown as { cancel?: () => void }).cancel?.()
+        }
     }, [query, doSearch])
 
     return (
