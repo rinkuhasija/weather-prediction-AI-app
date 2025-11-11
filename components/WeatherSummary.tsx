@@ -2,60 +2,51 @@
 
 import React from "react"
 import { format, parseISO } from "date-fns"
-import { pickNearestHour } from "../utils/formatter"
+import { pickNearestHour } from "@/utils/formatter"
+import { Card, CardContent } from "@/components/ui/card"
 
-export default function WeatherSummary({
-    hourly,
-    date,
-    time,
-    loading,
-}: {
-    hourly: any[]
-    date: string
-    time: string
-    loading: boolean
-}) {
+export default function WeatherSummary({ hourly, date, time, loading }: any) {
     const selected = pickNearestHour(hourly, date, time)
 
     if (loading) {
         return (
-            <div className="card flex items-center justify-center text-slate-400">
-                Loading weather data...
-            </div>
+            <Card>
+                <CardContent className="flex items-center justify-center text-slate-400 py-8">
+                    Loading weather data...
+                </CardContent>
+            </Card>
         )
     }
 
     return (
-        <div className="card">
-            {selected ? (
-                <div className="flex justify-between items-center">
-                    <div>
-                        <div className="text-sm text-slate-400">Temperature at chosen time</div>
-                        <div className="text-3xl font-bold mt-1">
-                            {Math.round(selected.temp)}°C
-                        </div>
-                        <div className="text-sm text-slate-300">
-                            {format(parseISO(selected.time), "eee, MMM d • HH:mm")}
-                        </div>
-                    </div>
-
-                    <div className="flex gap-4">
-                        <div className="text-center">
-                            <div className="text-sm text-slate-400">Precip</div>
-                            <div className="text-xl font-semibold">{selected.precip} mm</div>
-                        </div>
-
-                        <div className="text-center">
-                            <div className="text-sm text-slate-400">Wind</div>
-                            <div className="text-xl font-semibold">
-                                {selected.wind !== null ? Math.round(selected.wind) + " km/h" : "--"}
+        <Card className="bg-white/5 backdrop-blur border border-white/10">
+            <CardContent className="flex justify-between items-center py-5">
+                {selected ? (
+                    <>
+                        <div>
+                            <div className="text-sm text-slate-400">Temperature</div>
+                            <div className="text-3xl font-bold">{Math.round(selected.temp)}°C</div>
+                            <div className="text-sm text-slate-300">
+                                {format(parseISO(selected.time), "eee, MMM d • HH:mm")}
                             </div>
                         </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="text-slate-400 text-center py-4">No data available</div>
-            )}
-        </div>
+                        <div className="flex gap-6">
+                            <div className="text-center">
+                                <div className="text-sm text-slate-400">Precip</div>
+                                <div className="text-xl font-semibold">{selected.precip} mm</div>
+                            </div>
+                            <div className="text-center">
+                                <div className="text-sm text-slate-400">Wind</div>
+                                <div className="text-xl font-semibold">
+                                    {selected.wind !== null ? Math.round(selected.wind) + " km/h" : "--"}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <div className="text-slate-400">No data available</div>
+                )}
+            </CardContent>
+        </Card>
     )
 }

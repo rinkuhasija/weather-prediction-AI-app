@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import { loadFavorites, saveFavorites } from "../utils/storage"
+import { Button } from "./ui/button"
 
 export default function Favorites({ onSelect }: { onSelect: (loc: any) => void }) {
     const [favorites, setFavorites] = useState<any[]>([])
@@ -30,12 +31,13 @@ export default function Favorites({ onSelect }: { onSelect: (loc: any) => void }
         return (
             <div className="mt-4 text-slate-400 text-sm">
                 No favorites yet. Search a city and click “Add to Favorites” (coming soon).
-                <button
+                <Button
+                    variant="secondary"
                     className="text-xs text-sky-400 underline ml-2"
                     onClick={addSampleFavorite}
                 >
                     Add sample
-                </button>
+                </Button>
             </div>
         )
     }
@@ -49,18 +51,20 @@ export default function Favorites({ onSelect }: { onSelect: (loc: any) => void }
                         key={`${fav.latitude}-${fav.longitude}`}
                         className="flex justify-between items-center bg-white/5 rounded p-2 hover:bg-white/10 transition"
                     >
-                        <button
+                        <Button
+                            variant="ghost"
                             onClick={() => onSelect(fav)}
                             className="text-left text-slate-200 text-sm flex-1"
                         >
                             {fav.name}
-                        </button>
-                        <button
+                        </Button>
+                        <Button
+                            variant="ghost"
                             onClick={() => removeFavorite(fav.name)}
                             className="text-slate-400 hover:text-red-400 ml-2 text-xs"
                         >
                             ✕
-                        </button>
+                        </Button>
                     </div>
                 ))}
             </div>
